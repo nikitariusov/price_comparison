@@ -1,3 +1,5 @@
+file = 'test/prods.xlsx'
+
 class Product:
 
     def __init__(self, name, kty_link, competitor_1, competitor__link_1,
