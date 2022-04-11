@@ -2,7 +2,7 @@ import openpyxl
 
 
 def read_file(file):
-    wb = openpyxl.load_workbook(file)
+    wb = openpyxl.load_workbook(filename=file)
     sheet = wb.active
     rows = sheet.max_row
     cols = sheet.max_column
@@ -15,17 +15,19 @@ def read_file(file):
                  'Конкурент 5', 'Ссылка конкурента 5', 'Цена конкурента 5']
 
     contents = []
-    for row in sheet.iter_rows(min_row=2, max_col=sheet.max_column, max_row=sheet.max_row):
-        items = {}
-        j = 0
+    for row in sheet.iter_rows(min_row=2, max_col=cols, max_row=rows):
+        dic = {}
+        items = []
         for cell in row:
-            item = cell.value
-            items[name_cols[j]] = item
-            j += 1
-        contents.append(items)
+            items.append(cell.value)
+
+        for i in range(0, len(items)):
+            dic[name_cols[i]] = items[i]
+
+        contents.append(dic)
     return contents
 
 
 if __name__ == '__main__':
-    file = 'test/prods.xlsx'
+    file = 'test/prods2.xlsx'
     print(read_file(file))
