@@ -38,6 +38,11 @@ def parse(url):
             three_metra_pars(html.text)
         elif name == 'zaslonka.com.ua':
             zaslonka_pars(html.text)
+        elif name == 'palladium.ua':
+            palladim_pars(html.text)
+        elif name == 'in-ua.com':
+            install_ua(html.text)
+
 
 
 def kty_pars(html_text):
@@ -88,6 +93,30 @@ def zaslonka_pars(html_text):
     print(price)
 
 
+def palladim_pars(html_text):
+    print('[TEST] Паладиум начало парсинга')
+    soup = BeautifulSoup(html_text, 'html.parser')
+    item = soup.find('span', class_='b')
+    if item:
+        price = item.text
+        price = also_number(price)
+    else:
+        price = 'ERROR'
+    print(price)
+
+
+def install_ua(html_text):
+    print('[TEST] Инсталл начало парсинга')
+    soup = BeautifulSoup(html_text, 'html.parser')
+    item = soup.find('p', class_='new-price')
+    if item:
+        price = item.text
+        price = price[:price.find('.')].strip()
+    else:
+        price = 'ERROR'
+    print(price)
+
+
 if __name__ == '__main__':
     test_list = [{'Название': 'Насосная станция Optima TPS60 Mini', 'Бренд': 'Optima',
                   'Ссылка КТУ': 'https://kty.com.ua/ru/nasosnaya-stanciya-optima-tps60-mini-037-kvt.html',
@@ -103,6 +132,13 @@ if __name__ == '__main__':
                                                'Ссылка конкурента 1': 'https://3metra.com/catalog/avtomatika_dlya_nasosov/zashchita-sukhogo-khoda-optima-pc59-n-c-reguliruemym-diapazonom-davleniya/',
                                                'Цена конкурента 1': None, 'Конкурент 2': 'Заслонка',
                                                'Ссылка конкурента 2': 'https://zaslonka.com.ua/rele-davleniya-optima-pc59-n-c-reguliruemym-diapazonom-davleniya/',
+                                               'Цена конкурента 2': None, 'Конкурент 3': None,
+                                               'Ссылка конкурента 3': None, 'Цена конкурента 3': None}, {'Название': 'EP-1', 'Бренд': 'Optima',
+                                               'Ссылка КТУ': None,
+                                               'Цена КТУ': None, 'Конкурент 1': '3 метра',
+                                               'Ссылка конкурента 1': 'https://palladium.ua/optima_ep-1.html',
+                                               'Цена конкурента 1': None, 'Конкурент 2': 'Заслонка',
+                                               'Ссылка конкурента 2': 'https://in-ua.com/products/gidroakkumulyator-vertikalnyj-reflex-refix-de-7302000-12l-de-sinij-10-bar-membrana-ne-smennaya',
                                                'Цена конкурента 2': None, 'Конкурент 3': None,
                                                'Ссылка конкурента 3': None, 'Цена конкурента 3': None}]
 
