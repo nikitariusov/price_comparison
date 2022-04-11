@@ -78,6 +78,14 @@ def three_metra_pars(html_text):
 
 def zaslonka_pars(html_text):
     print('[TEST] Заслонка начало парсинга')
+    soup = BeautifulSoup(html_text, 'html.parser')
+    item = soup.find('span', class_='ty-price-num')
+    if item:
+        price = item.text
+        price = also_number(price)
+    else:
+        price = 'ERROR'
+    print(price)
 
 
 if __name__ == '__main__':
