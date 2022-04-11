@@ -1,5 +1,6 @@
 import requests
-import bs4
+from bs4 import BeautifulSoup
+import re
 
 HEADERS = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
                          '(KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36',
@@ -19,6 +20,11 @@ def define_magazine(url):
     return link
 
 
+def also_number(str):
+    str1 = re.findall('[0-9]', str)
+    return ''.join(str1)
+
+
 def parse(url):
     html = get_html(url)
 
@@ -36,6 +42,10 @@ def parse(url):
 
 def kty_pars(html_text):
     print('[TEST] KTY начало парсинга')
+    soup = BeautifulSoup(html_text, 'html.parser')
+    price = soup.find('span', class_='current-price').text
+    price = also_number(price)
+    print(price)
 
 
 def aquatools_pars(html_text):
@@ -48,6 +58,9 @@ def three_metra_pars(html_text):
 
 def zaslonka_pars(html_text):
     print('[TEST] Заслонка начало парсинга')
+
+
+
 
 
 if __name__ == '__main__':
