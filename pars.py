@@ -43,27 +43,41 @@ def parse(url):
 def kty_pars(html_text):
     print('[TEST] KTY начало парсинга')
     soup = BeautifulSoup(html_text, 'html.parser')
-    price = soup.find('span', class_='current-price').text
-    price = also_number(price)
+    item = soup.find('span', class_='current-price')
+    if item:
+        price = item.text
+        price = also_number(price)
+    else:
+        price = 'ERROR'
     print(price)
 
 
 def aquatools_pars(html_text):
     print('[TEST] Акватулс начало парсинга')
     soup = BeautifulSoup(html_text, 'html.parser')
-    price = soup.find('ul', class_='list-unstyled price').text
-    price = also_number(price)
+    item = soup.find('ul', class_='list-unstyled price')
+    if item:
+        price = item.text
+        price = also_number(price)
+    else:
+        price = 'ERROR'
     print(price)
+
 
 def three_metra_pars(html_text):
     print('[TEST] 3метра начало парсинга')
+    soup = BeautifulSoup(html_text, 'html.parser')
+    item = soup.find('div', class_='catalog-element-price-discount')
+    if item:
+        price = item.text
+        price = also_number(price)
+    else:
+        price = 'ERROR'
+    print(price)
 
 
 def zaslonka_pars(html_text):
     print('[TEST] Заслонка начало парсинга')
-
-
-
 
 
 if __name__ == '__main__':
@@ -72,7 +86,7 @@ if __name__ == '__main__':
                   'Цена КТУ': None, 'Конкурент 1': 'AquaTools',
                   'Ссылка конкурента 1': 'https://aquatools.com.ua/nasosnaya-stanciya-optima-tps-60-mini.html',
                   'Цена конкурента 1': None, 'Конкурент 2': '3 метра',
-                  'Ссылка конкурента 2': 'https://3metra.com/catalog/nasosnye-stantsii/nasosnaya-stantsiya-optima-tps60-mini-8400/',
+                  'Ссылка конкурента 2': 'https://3metra.com/catalog/nasosnye-stantsii/nasosnaya-stantsiya-optima-ips-1-smart-14283/',
                   'Цена конкурента 2': None, 'Конкурент 3': 'Заслонка',
                   'Ссылка конкурента 3': 'https://zaslonka.com.ua/nasosnaya-stanciya-optima-tps60-mini/',
                   'Цена конкурента 3': None}, {'Название': 'Optima PC59', 'Бренд': 'Optima',
