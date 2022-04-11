@@ -1,6 +1,8 @@
 from read import read_file
+from pars import *
 
-file = 'test/prods.xlsx'
+file = 'test/prods2.xlsx'
+
 
 # class Product:
 #
@@ -21,6 +23,35 @@ file = 'test/prods.xlsx'
 #         self.competitor_link_3 = competitor__link_3
 #         self.competitor_3_price = competitor_3_price
 
+def cell_parsing(data):
+    for i in data:
+        if i['Ссылка КТУ']:
+            price = parse(i['Ссылка КТУ'])
+            i['Цена КТУ'] = price
+
+        if i['Ссылка конкурента 1']:
+            price = parse(i['Ссылка конкурента 1'])
+            i['Цена конкурента 1'] = price
+
+        if i['Ссылка конкурента 2']:
+            price = parse(i['Ссылка конкурента 2'])
+            i['Цена конкурента 2'] = price
+
+        if i['Ссылка конкурента 3']:
+            price = parse(i['Ссылка конкурента 3'])
+            i['Цена конкурента 3'] = price
+
+        if i['Ссылка конкурента 4']:
+            price = parse(i['Ссылка конкурента 4'])
+            i['Цена конкурента 4'] = price
+
+        if i['Ссылка конкурента 5']:
+            price = parse(i['Ссылка конкурента 5'])
+            i['Цена конкурента 5'] = price
+    return data
+
 
 if __name__ == '__main__':
-    print(read_file(file))
+    data = read_file(file)
+    base = cell_parsing(data)
+    print(base)
