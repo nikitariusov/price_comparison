@@ -1,5 +1,6 @@
 from read import read_file
 from pars import *
+from save import save_file
 
 file = 'test/prods2.xlsx'
 
@@ -55,3 +56,4 @@ if __name__ == '__main__':
     data = read_file(file)
     base = cell_parsing(data)
     print(base)
+    save_file(base, file)
