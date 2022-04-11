@@ -32,21 +32,52 @@ def parse(url):
         name = define_magazine(url)
 
         if name == 'kty.com.ua':
-            price = kty_pars(html.text)
+            try:
+                price = int(kty_pars(html.text))
+            except ValueError:
+                price = kty_pars(html.text)
+
         elif name == 'aquatools.com.ua':
-            price = aquatools_pars(html.text)
+            try:
+                price = int(aquatools_pars(html.text))
+            except ValueError:
+                price = aquatools_pars(html.text)
+
         elif name == '3metra.com':
-            price = three_metra_pars(html.text)
+            try:
+                price = int(three_metra_pars(html.text))
+            except ValueError:
+                price = aquatools_pars(html.text)
+
         elif name == 'zaslonka.com.ua':
-            price = zaslonka_pars(html.text)
+            try:
+                price = int(zaslonka_pars(html.text))
+            except ValueError:
+                price = zaslonka_pars(html.text)
+
         elif name == 'palladium.ua':
-            price = palladim_pars(html.text)
+            try:
+                price = int(palladim_pars(html.text))
+            except ValueError:
+                price = palladim_pars(html.text)
+
         elif name == 'in-ua.com':
-            price = install_ua(html.text)
+            try:
+                price = int(install_ua(html.text))
+            except ValueError:
+                price = install_ua(html.text)
+
         elif name == 'geyser.com.ua':
-            price = geyser(html.text)
+            try:
+                price = int(geyser(html.text))
+            except ValueError:
+                price = geyser(html.text)
+
         elif name == 'water-pomp.com.ua':
-            price = water_pomp(html.text)
+            try:
+                price = int(water_pomp(html.text))
+            except ValueError:
+                price = water_pomp(html.text)
 
         else:
             price = 'ERROR No Parser'
@@ -76,6 +107,7 @@ def aquatools_pars(html_text):
     item = soup.find('ul', class_='list-unstyled price')
     if item:
         price = item.text
+        price = price[:price.find('.')].strip()
         price = also_number(price)
     else:
         price = 'PARS ERROR'
@@ -88,6 +120,7 @@ def three_metra_pars(html_text):
     item = soup.find('div', class_='catalog-element-price-discount')
     if item:
         price = item.text
+        price = price[:price.find('.')].strip()
         price = also_number(price)
     else:
         price = 'PARS ERROR'
@@ -112,6 +145,7 @@ def palladim_pars(html_text):
     item = soup.find('span', class_='b')
     if item:
         price = item.text
+        price = price[:price.find('.')].strip()
         price = also_number(price)
     else:
         price = 'PARS ERROR'
@@ -125,6 +159,7 @@ def install_ua(html_text):
     if item:
         price = item.text
         price = price[:price.find('.')].strip()
+        price = also_number(price)
     else:
         price = 'PARS ERROR'
     return price

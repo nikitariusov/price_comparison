@@ -54,6 +54,7 @@ def cell_parsing(data):
 
 if __name__ == '__main__':
     data = read_file(file)
+    print(data)
     base = cell_parsing(data)
     print(base)
     save_file(base, file)
