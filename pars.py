@@ -12,6 +12,44 @@ def get_html(url, param=None):
     return html
 
 
+def define_magazine(url):
+    host = url[8:]
+    end_host = host.find('/')
+    link = host[:end_host]
+    return link
+
+
+def parse(url):
+    html = get_html(url)
+
+    if html.status_code == 200:
+        name = define_magazine(url)
+        if name == 'kty.com.ua':
+            kty_pars(html.text)
+        elif name == 'aquatools.com.ua':
+            aquatools_pars(html.text)
+        elif name == '3metra.com':
+            three_metra_pars(html.text)
+        elif name == 'zaslonka.com.ua':
+            zaslonka_pars(html.text)
+
+
+def kty_pars(html_text):
+    print('[TEST] KTY начало парсинга')
+
+
+def aquatools_pars(html_text):
+    print('[TEST] Акватулс начало парсинга')
+
+
+def three_metra_pars(html_text):
+    print('[TEST] 3метра начало парсинга')
+
+
+def zaslonka_pars(html_text):
+    print('[TEST] Заслонка начало парсинга')
+
+
 if __name__ == '__main__':
     test_list = [{'Название': 'Насосная станция Optima TPS60 Mini', 'Бренд': 'Optima',
                   'Ссылка КТУ': 'https://kty.com.ua/ru/nasosnaya-stanciya-optima-tps60-mini-037-kvt.html',
@@ -32,11 +70,10 @@ if __name__ == '__main__':
 
     for i in test_list:
         if i['Ссылка КТУ']:
-            print('Ссылка КТУ', get_html(i['Ссылка КТУ']).status_code)
+            parse(i['Ссылка КТУ'])
         if i['Ссылка конкурента 1']:
-            print('Ссылка конкурента 1', get_html(i['Ссылка конкурента 1']).status_code)
+            parse(i['Ссылка конкурента 1'])
         if i['Ссылка конкурента 2']:
-            print('Ссылка конкурента 2', get_html(i['Ссылка конкурента 2']).status_code)
+            parse(i['Ссылка конкурента 2'])
         if i['Ссылка конкурента 3']:
-            print('Ссылка конкурента 3', get_html(i['Ссылка конкурента 3']).status_code)
-
+            parse(i['Ссылка конкурента 3'])
