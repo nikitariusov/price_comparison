@@ -50,7 +50,10 @@ def kty_pars(html_text):
 
 def aquatools_pars(html_text):
     print('[TEST] Акватулс начало парсинга')
-
+    soup = BeautifulSoup(html_text, 'html.parser')
+    price = soup.find('ul', class_='list-unstyled price').text
+    price = also_number(price)
+    print(price)
 
 def three_metra_pars(html_text):
     print('[TEST] 3метра начало парсинга')
