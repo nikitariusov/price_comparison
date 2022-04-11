@@ -1,8 +1,7 @@
 from read import read_file
 from pars import *
 from save import save_file
-
-file = 'test/prods2.xlsx'
+import easygui
 
 
 # class Product:
@@ -53,6 +52,7 @@ def cell_parsing(data):
 
 
 if __name__ == '__main__':
+    file = easygui.fileopenbox('Выберите файл')
     data = read_file(file)
     print(data)
     base = cell_parsing(data)
