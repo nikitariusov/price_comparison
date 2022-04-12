@@ -60,6 +60,7 @@ if __name__ == '__main__':
         print(f'[INFO] Общее кол-во товаров: {products_count}.')
         base = cell_parsing(data)
         save_file(base, file)
+        input()
     except TypeError:
         print(error_choise_file)
         input()

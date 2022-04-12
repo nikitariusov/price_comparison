@@ -81,16 +81,13 @@ def parse(url):
 
         else:
             price = 'ERROR No Parser'
-        print(price)
         return price
     else:
         price = 'ERROR no 200'
-        print(price)
         return price
 
 
 def kty_pars(html_text):
-    print('[TEST] KTY начало парсинга')
     soup = BeautifulSoup(html_text, 'html.parser')
     item = soup.find('span', class_='current-price')
     if item:
@@ -102,7 +99,6 @@ def kty_pars(html_text):
 
 
 def aquatools_pars(html_text):
-    print('[TEST] Акватулс начало парсинга')
     soup = BeautifulSoup(html_text, 'html.parser')
     item = soup.find('ul', class_='list-unstyled price')
     if item:
@@ -115,7 +111,6 @@ def aquatools_pars(html_text):
 
 
 def three_metra_pars(html_text):
-    print('[TEST] 3метра начало парсинга')
     soup = BeautifulSoup(html_text, 'html.parser')
     item = soup.find('div', class_='catalog-element-price-discount')
     if item:
@@ -128,7 +123,6 @@ def three_metra_pars(html_text):
 
 
 def zaslonka_pars(html_text):
-    print('[TEST] Заслонка начало парсинга')
     soup = BeautifulSoup(html_text, 'html.parser')
     item = soup.find('span', class_='ty-price-num')
     if item:
@@ -140,7 +134,6 @@ def zaslonka_pars(html_text):
 
 
 def palladim_pars(html_text):
-    print('[TEST] Паладиум начало парсинга')
     soup = BeautifulSoup(html_text, 'html.parser')
     item = soup.find('span', class_='b')
     if item:
@@ -153,7 +146,6 @@ def palladim_pars(html_text):
 
 
 def install_ua(html_text):
-    print('[TEST] Инсталл начало парсинга')
     soup = BeautifulSoup(html_text, 'html.parser')
     item = soup.find('p', class_='new-price')
     if item:
@@ -166,7 +158,6 @@ def install_ua(html_text):
 
 
 def geyser(html_text):
-    print('[TEST] Гейзер начало парсинга')
     soup = BeautifulSoup(html_text, 'html.parser')
     item = soup.find('div', class_='product-price__item')
     if item:
@@ -179,7 +170,6 @@ def geyser(html_text):
 
 
 def water_pomp(html_text):
-    print('[TEST] Ватер начало парсинга')
     soup = BeautifulSoup(html_text, 'html.parser')
     item = soup.find('p', class_='b-product-cost__price')
     if item:
@@ -189,56 +179,3 @@ def water_pomp(html_text):
     else:
         price = 'PARS ERROR'
     return price
-
-
-if __name__ == '__main__':
-    test_list = [{'Название': 'Optima TPS60 Mini', 'Бренд': 'Optima',
-                  'Ссылка КТУ': 'https://kty.com.ua/ru/nasosnaya-stanciya-optima-tps60-mini-037-kvt.html',
-                  'Цена КТУ': None, 'Конкурент 1': 'AquaTools',
-                  'Ссылка конкурента 1': 'https://aquatools.com.ua/nasosnaya-stanciya-optima-tps-60-mini.html',
-                  'Цена конкурента 1': None, 'Конкурент 2': '3 метра',
-                  'Ссылка конкурента 2': 'https://3metra.com/catalog/nasosnye-stantsii/nasosnaya-stantsiya-optima-tps60-mini-8400/',
-                  'Цена конкурента 2': None, 'Конкурент 3': 'Заслонка',
-                  'Ссылка конкурента 3': 'https://zaslonka.com.ua/nasosnaya-stanciya-optima-tps60-mini/',
-                  'Цена конкурента 3': None, 'Конкурент 4': 'Гейзер',
-                  'Ссылка конкурента 4': 'https://geyser.com.ua/nasosnaya-stantsiya-optima-tps60-mini/',
-                  'Цена конкурента 4': None, 'Конкурент 5': 'Ватерпомп',
-                  'Ссылка конкурента 5': 'https://water-pomp.com.ua/p78671483-nasosnaya-stantsiya-optima.html',
-                  'Цена конкурента 5': None}, {'Название': 'Optima PC59', 'Бренд': 'Optima',
-                                               'Ссылка КТУ': 'https://kty.com.ua/ru/zashhita-sukhogo-khoda-optima-pc59-c-reguliruemym-diapazonom-davleniya.html',
-                                               'Цена КТУ': None, 'Конкурент 1': '3 метра',
-                                               'Ссылка конкурента 1': 'https://3metra.com/catalog/avtomatika_dlya_nasosov/zashchita-sukhogo-khoda-optima-pc59-n-c-reguliruemym-diapazonom-davleniya/',
-                                               'Цена конкурента 1': None, 'Конкурент 2': 'Заслонка',
-                                               'Ссылка конкурента 2': 'https://zaslonka.com.ua/rele-davleniya-optima-pc59-n-c-reguliruemym-diapazonom-davleniya/',
-                                               'Цена конкурента 2': None, 'Конкурент 3': None,
-                                               'Ссылка конкурента 3': None, 'Цена конкурента 3': None,
-                                               'Конкурент 4': None, 'Ссылка конкурента 4': None,
-                                               'Цена конкурента 4': None, 'Конкурент 5': None,
-                                               'Ссылка конкурента 5': None, 'Цена конкурента 5': None}]
-
-    for i in test_list:
-        if i['Ссылка КТУ']:
-            price = parse(i['Ссылка КТУ'])
-            i['Цена КТУ'] = price
-
-        if i['Ссылка конкурента 1']:
-            price = parse(i['Ссылка конкурента 1'])
-            i['Цена конкурента 1'] = price
-
-        if i['Ссылка конкурента 2']:
-            price = parse(i['Ссылка конкурента 2'])
-            i['Цена конкурента 2'] = price
-
-        if i['Ссылка конкурента 3']:
-            price = parse(i['Ссылка конкурента 3'])
-            i['Цена конкурента 3'] = price
-
-        if i['Ссылка конкурента 4']:
-            price = parse(i['Ссылка конкурента 4'])
-            i['Цена конкурента 4'] = price
-
-        if i['Ссылка конкурента 5']:
-            price = parse(i['Ссылка конкурента 5'])
-            i['Цена конкурента 5'] = price
-
-    print(test_list)
