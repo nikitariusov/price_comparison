@@ -4,24 +4,31 @@ from save import save_file
 import easygui
 
 
-# class Product:
-#
-#     def __init__(self, name, kty_link, kty_price,
-#                  competitor_1, competitor__link_1, competitor_1_price,
-#                  competitor_2, competitor__link_2, competitor_2_price,
-#                  competitor_3, competitor__link_3, competitor_3_price):
-#         self.name = name
-#         self.kty_link = kty_link
-#         self.kty_price = kty_price
-#         self.competitor_1 = competitor_1
-#         self.competitor_link_1 = competitor__link_1
-#         self.competitor_1_price = competitor_1_price
-#         self.competitor_2 = competitor_2
-#         self.competitor_link_2 = competitor__link_2
-#         self.competitor_2_price = competitor_2_price
-#         self.competitor_3 = competitor_3
-#         self.competitor_link_3 = competitor__link_3
-#         self.competitor_3_price = competitor_3_price
+message = '''Программа для мониторинга цен на интернет ресурсах.
+
+    !!! Любое копирование кода или распространение программы будет считаться нарушением авторских прав !!!
+
+Доступные ресурсы:
+    - kty.com.ua
+    - aquatools.com.ua
+    - 3metra.com
+    - zaslonka.com.ua
+    - palladium.ua
+    - in-ua.com
+    - geyser.com.ua
+    - water-pomp.com.ua
+    
+    Для работы необходим файл формата .xlsx с определенным расположением столбцов.
+    После проверки будет сохранен новый файл с отчетом.
+    
+    Контакт для связи: telegram @n_konstruktor
+    
+    START - Enter
+    '''
+
+error_choise_file = '''     ERROR ошибка выбора файла
+
+    Выход - Enter'''
 
 def start_pars(i, link_name_cell, price_name_cell):
     try:
@@ -44,9 +51,16 @@ def cell_parsing(data):
 
 
 if __name__ == '__main__':
-    file = easygui.fileopenbox('Выберите файл')
-    data = read_file(file)
-    print(data)
-    base = cell_parsing(data)
-    print(base)
-    save_file(base, file)
+    print(message)
+    x = str(input())
+    try:
+        file = easygui.fileopenbox('Выберите файл')
+        data = read_file(file)
+        products_count = len(data)
+        print(f'[INFO] Общее кол-во товаров: {products_count}.')
+        base = cell_parsing(data)
+        save_file(base, file)
+    except TypeError:
+        print(error_choise_file)
+        input()
+        exit()
