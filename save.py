@@ -1,4 +1,5 @@
 import openpyxl
+from openpyxl.styles import Font
 from datetime import datetime, date
 from colorama import init, Fore
 
@@ -7,8 +8,19 @@ def try_save(sheet, i, j, cols_name, price):
     try:
         if i[price]:
             sheet[f'{cols_name}{j}'] = i[price]
+            sheet[f'{cols_name}{j}'].font = font
     except KeyError:
         pass
+
+
+font = Font(name='Calibri',
+            size=11,
+            bold=False,
+            italic=False,
+            vertAlign=None,
+            underline='none',
+            strike=False,
+            color='FF000000')
 
 
 def save_file(data, file):
