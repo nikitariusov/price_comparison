@@ -10,9 +10,7 @@ def try_save(sheet, i, j, cols_name, price):
             sheet[f'{cols_name}{j}'] = i[price]
             sheet[f'{cols_name}{j}'].font = font
             try:
-                if i['Цена КТУ'] < i[price]:
-                    sheet[f'{cols_name}{j}'].fill = upper_fill
-                elif i['Цена КТУ'] > i[price]:
+                if i['Цена КТУ'] > i[price]:
                     sheet[f'{cols_name}{j}'].fill = lower_fill
             except:
                 pass
@@ -28,10 +26,6 @@ font = Font(name='Calibri',
             underline='none',
             strike=False,
             color='FF000000')
-
-upper_fill = PatternFill(fill_type='solid',
-                         start_color='00FF0000',
-                         end_color='00FF0000')
 
 lower_fill = PatternFill(fill_type='solid',
                          start_color='0000FF00',
