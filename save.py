@@ -1,5 +1,6 @@
 import openpyxl
 from datetime import datetime, date
+from colorama import init, Fore
 
 
 def try_save(sheet, i, j, cols_name, price):
@@ -24,11 +25,16 @@ def save_file(data, file):
         try_save(sheet, i, j, 'S', 'Цена конкурента 5')
         j += 1
 
-    wb.save(f'Проверен-{date.today()}.xlsx')
+    filename = f'Проверен-{date.today()}.xlsx'
+    wb.save(filename)
 
-    print('''[INFO] Файл сохранен''')
+    init(autoreset=True)  # запускаем колораму
+    print(Fore.GREEN + f'''[INFO]\tCохранен файл {filename}''')
     print('''\nВыход - Enter''')
 
 
 if __name__ == '__main__':
     print(date.today())
+    init(autoreset=True)
+    print(Fore.GREEN + f'''[INFO]\tCохранен файл ''')
+    print('''\nВыход - Enter''')

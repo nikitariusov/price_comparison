@@ -2,6 +2,7 @@ from read import read_file
 from pars import *
 from save import save_file
 import easygui
+from colorama import init, Fore
 
 message = '''Программа для мониторинга цен на интернет ресурсах.
 
@@ -54,17 +55,18 @@ def cell_parsing(data):
 
 
 if __name__ == '__main__':
+    init(autoreset=True)
     print(message)
     # x = str(input())
     try:
         file = easygui.fileopenbox('Выберите файл')
         data = read_file(file)
         products_count = len(data)
-        print(f'[INFO] Общее кол-во товаров: {products_count}.')
+        print(Fore . BLUE + f'[INFO] Общее кол-во товаров: {products_count}.')
         base = cell_parsing(data)
         save_file(base, file)
         input()
     except TypeError:
-        print(error_choise_file)
+        print(Fore . RED + error_choise_file)
         input()
         exit()
