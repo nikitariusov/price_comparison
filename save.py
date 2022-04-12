@@ -1,4 +1,5 @@
 import openpyxl
+from datetime import datetime, date
 
 
 def try_save(sheet, i, j, cols_name, price):
@@ -23,7 +24,11 @@ def save_file(data, file):
         try_save(sheet, i, j, 'S', 'Цена конкурента 5')
         j += 1
 
-    wb.save('Проверен.xlsx')
+    wb.save(f'Проверен-{date.today()}.xlsx')
 
     print('''[INFO] Файл сохранен''')
     print('''\nВыход - Enter''')
+
+
+if __name__ == '__main__':
+    print(date.today())
