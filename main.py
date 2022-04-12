@@ -54,12 +54,20 @@ def cell_parsing(data):
     return data
 
 
+def check_file(file):
+    format_file = file[file.find('.'):]
+    return format_file
+
+
 if __name__ == '__main__':
     init(autoreset=True)
     print(message)
-    # x = str(input())
+    input()
     try:
         file = easygui.fileopenbox('Выберите файл')
+        while check_file(file) != '.xlsx':
+            print(Fore . YELLOW + 'Выберите файл Excel!')
+            file = easygui.fileopenbox('Выберите файл')
         data = read_file(file)
         products_count = len(data)
         print(Fore . BLUE + f'[INFO] Общее кол-во товаров: {products_count}.')
