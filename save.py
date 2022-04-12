@@ -47,7 +47,13 @@ def save_file(data, file):
         j += 1
 
     filename = f'Проверен-{date.today()}.xlsx'
-    wb.save(filename)
+    try:
+        wb.save(filename)
+    except PermissionError:
+        print(Fore.RED + '[ERROR] Необходимо закрыть файл!')
+        print('''\nВыход - Enter''')
+        input()
+        exit()
 
     init(autoreset=True)  # запускаем колораму
     print(Fore.GREEN + f'''[INFO]\tCохранен файл {filename}''')
