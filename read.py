@@ -7,6 +7,8 @@ def read_file(file):
     rows = sheet.max_row
     cols = sheet.max_column
 
+    clean_file(sheet)
+
     name_cols = ['Название', 'Бренд', 'Ссылка КТУ', 'Цена КТУ',
                  'Конкурент 1', 'Ссылка конкурента 1', 'Цена конкурента 1',
                  'Конкурент 2', 'Ссылка конкурента 2', 'Цена конкурента 2',
@@ -26,6 +28,13 @@ def read_file(file):
 
         contents.append(dic)
     return contents
+
+
+def clean_file(sheet):
+    list_cols_name = ['D', 'G', 'J', 'M', 'P', 'S']
+    for i in list_cols_name:
+        for j in range(2, sheet.max_row):
+            sheet[f'{i}{j}'] = ''
 
 
 if __name__ == '__main__':
