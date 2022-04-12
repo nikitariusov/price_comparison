@@ -1,5 +1,5 @@
 import openpyxl
-from openpyxl.styles import Font
+from openpyxl.styles import Font, PatternFill
 from datetime import datetime, date
 from colorama import init, Fore
 
@@ -9,6 +9,13 @@ def try_save(sheet, i, j, cols_name, price):
         if i[price]:
             sheet[f'{cols_name}{j}'] = i[price]
             sheet[f'{cols_name}{j}'].font = font
+            try:
+                if i['Цена КТУ'] < i[price]:
+                    sheet[f'{cols_name}{j}'].fill = upper_fill
+                elif i['Цена КТУ'] > i[price]:
+                    sheet[f'{cols_name}{j}'].fill = lower_fill
+            except:
+                pass
     except KeyError:
         pass
 
@@ -21,6 +28,14 @@ font = Font(name='Calibri',
             underline='none',
             strike=False,
             color='FF000000')
+
+upper_fill = PatternFill(fill_type='solid',
+                         start_color='00FF0000',
+                         end_color='00FF0000')
+
+lower_fill = PatternFill(fill_type='solid',
+                         start_color='0000FF00',
+                         end_color='0000FF00')
 
 
 def save_file(data, file):
