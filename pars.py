@@ -6,6 +6,9 @@ HEADERS = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/
                          '(KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36',
            'accept': '*/*'}
 
+added_magazine = ('kty.com.ua', 'aquatools.com.ua', '3metra.com', 'zaslonka.com.ua', 'palladium.ua', 'in-ua.com',
+                  'in-ua.com', 'geyser.com.ua', 'water-pomp.com.ua')
+
 
 def get_html(url, param=None):
     r = requests.get(url, headers=HEADERS, params=param)
@@ -26,65 +29,66 @@ def also_number(str):
 
 
 def parse(url):
-    html = get_html(url)
+    name = define_magazine(url)
+    if name in added_magazine:
+        html = get_html(url)
+        if html.status_code == 200:
+            if name == 'kty.com.ua':
+                try:
+                    price = int(kty_pars(html.text))
+                except ValueError:
+                    price = kty_pars(html.text)
 
-    if html.status_code == 200:
-        name = define_magazine(url)
+            elif name == 'aquatools.com.ua':
+                try:
+                    price = int(aquatools_pars(html.text))
+                except ValueError:
+                    price = aquatools_pars(html.text)
 
-        if name == 'kty.com.ua':
-            try:
-                price = int(kty_pars(html.text))
-            except ValueError:
-                price = kty_pars(html.text)
+            elif name == '3metra.com':
+                try:
+                    price = int(three_metra_pars(html.text))
+                except ValueError:
+                    price = aquatools_pars(html.text)
 
-        elif name == 'aquatools.com.ua':
-            try:
-                price = int(aquatools_pars(html.text))
-            except ValueError:
-                price = aquatools_pars(html.text)
+            elif name == 'zaslonka.com.ua':
+                try:
+                    price = int(zaslonka_pars(html.text))
+                except ValueError:
+                    price = zaslonka_pars(html.text)
 
-        elif name == '3metra.com':
-            try:
-                price = int(three_metra_pars(html.text))
-            except ValueError:
-                price = aquatools_pars(html.text)
+            elif name == 'palladium.ua':
+                try:
+                    price = int(palladim_pars(html.text))
+                except ValueError:
+                    price = palladim_pars(html.text)
 
-        elif name == 'zaslonka.com.ua':
-            try:
-                price = int(zaslonka_pars(html.text))
-            except ValueError:
-                price = zaslonka_pars(html.text)
+            elif name == 'in-ua.com':
+                try:
+                    price = int(install_ua(html.text))
+                except ValueError:
+                    price = install_ua(html.text)
 
-        elif name == 'palladium.ua':
-            try:
-                price = int(palladim_pars(html.text))
-            except ValueError:
-                price = palladim_pars(html.text)
+            elif name == 'geyser.com.ua':
+                try:
+                    price = int(geyser(html.text))
+                except ValueError:
+                    price = geyser(html.text)
 
-        elif name == 'in-ua.com':
-            try:
-                price = int(install_ua(html.text))
-            except ValueError:
-                price = install_ua(html.text)
-
-        elif name == 'geyser.com.ua':
-            try:
-                price = int(geyser(html.text))
-            except ValueError:
-                price = geyser(html.text)
-
-        elif name == 'water-pomp.com.ua':
-            try:
-                price = int(water_pomp(html.text))
-            except ValueError:
-                price = water_pomp(html.text)
-
+            elif name == 'water-pomp.com.ua':
+                try:
+                    price = int(water_pomp(html.text))
+                except ValueError:
+                    price = water_pomp(html.text)
+            else:
+                price = '2 No Parser'
+            return price
         else:
-            price = 'ERROR No Parser'
-        return price
+            price = 'No 200'
+            return price
     else:
-        price = 'ERROR no 200'
-        return price
+        price = 'No Parser'
+    return price
 
 
 def kty_pars(html_text):
