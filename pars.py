@@ -7,7 +7,7 @@ HEADERS = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/
            'accept': '*/*'}
 
 added_magazine = ('kty.com.ua', 'aquatools.com.ua', '3metra.com', 'zaslonka.com.ua', 'palladium.ua', 'in-ua.com',
-                  'in-ua.com', 'geyser.com.ua', 'water-pomp.com.ua')
+                  'in-ua.com', 'geyser.com.ua', 'water-pomp.com.ua', 'bt.rozetka.com.ua', 'rozetka.com.ua')
 
 
 def get_html(url, param=None):
@@ -38,6 +38,12 @@ def parse(url):
                     price = int(kty_pars(html.text))
                 except ValueError:
                     price = kty_pars(html.text)
+
+            elif name == 'bt.rozetka.com.ua' or name == 'rozetka.com.ua':
+                try:
+                    price = int(rozetka_pars(html.text))
+                except ValueError:
+                    price = rozetka_pars(html.text)
 
             elif name == 'aquatools.com.ua':
                 try:
@@ -94,6 +100,17 @@ def parse(url):
 def kty_pars(html_text):
     soup = BeautifulSoup(html_text, 'html.parser')
     item = soup.find('span', class_='current-price')
+    if item:
+        price = item.text
+        price = also_number(price)
+    else:
+        price = 'PARS ERROR'
+    return price
+
+
+def rozetka_pars(html_text):
+    soup = BeautifulSoup(html_text, 'html.parser')
+    item = soup.find('p', class_='product-prices__big')
     if item:
         price = item.text
         price = also_number(price)
@@ -183,3 +200,8 @@ def water_pomp(html_text):
     else:
         price = 'PARS ERROR'
     return price
+
+
+if __name__ == '__main__':
+   price = parse('https://rozetka.com.ua/budfix_70029/p95887744/')
+   print(price)
