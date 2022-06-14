@@ -1,19 +1,60 @@
+'''Принцип добавления новых интернет магазинов:
+1. Добавляем ссылку в кортеж added_magazine
+2. Пишем функцию название магазина-pars, в офсновном копируем с другого магазина но указываем элементы для поиска на странице
+3. В def parse пишем условие и указываем созданную функцию
+4. Если ссылка не работает через request то открываем через def open_in_webdriver (Селениум)
+5. В def open_in_webdriver пишем условие на новый магазин по примеру КранОк'''
+
 import requests
 from bs4 import BeautifulSoup
 import re
+from selenium import webdriver
+from selenium.common import TimeoutException
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 HEADERS = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
                          '(KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36',
            'accept': '*/*'}
 
 added_magazine = ('kty.com.ua', 'aquatools.com.ua', '3metra.com', 'zaslonka.com.ua', 'palladium.ua', 'in-ua.com',
-                  'in-ua.com', 'geyser.com.ua', 'water-pomp.com.ua', 'bt.rozetka.com.ua', 'rozetka.com.ua')
+                  'in-ua.com', 'geyser.com.ua', 'water-pomp.com.ua', 'bt.rozetka.com.ua', 'rozetka.com.ua',
+                  'kranok.ua')
 
 
 def get_html(url, param=None):
     r = requests.get(url, headers=HEADERS, params=param)
     html = r
     return html
+
+
+def open_in_webdriver(url, name):
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    driver.get(url)
+
+    if name == 'kranok.ua':
+        try:
+            WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.CLASS_NAME, 'normal-price')))
+            price = driver.find_element(by=By.CLASS_NAME, value='normal-price').find_element(by=By.CLASS_NAME,
+                                                                                             value='price').text
+
+            price = also_number(price)
+            return price
+        except TimeoutException:
+            WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.CLASS_NAME, 'stock-no')))
+            price = driver.find_element(by=By.CLASS_NAME, value='stock-no').text
+            price = also_number(price)
+            if price == 'Переглянути подібні товари':
+                price = 'Нет в наличии/нет цены'
+                return price
+    else:
+        price = 'Need Selenium Parser'
+
+        driver.quit()
+        return price
 
 
 def define_magazine(url):
@@ -44,6 +85,12 @@ def parse(url):
                     price = int(rozetka_pars(html.text))
                 except ValueError:
                     price = rozetka_pars(html.text)
+
+            elif name == 'kranok.ua':
+                try:
+                    price = int(kranok_pars(html.text))
+                except ValueError:
+                    price = kranok_pars(html.text)
 
             elif name == 'aquatools.com.ua':
                 try:
@@ -89,6 +136,13 @@ def parse(url):
             else:
                 price = '2 No Parser'
             return price
+
+        elif html.status_code == 403:
+            try:
+                price = open_in_webdriver(url, name)
+            except:
+                price = 'Selenium ERROR'
+
         else:
             price = 'No 200'
             return price
@@ -100,6 +154,17 @@ def parse(url):
 def kty_pars(html_text):
     soup = BeautifulSoup(html_text, 'html.parser')
     item = soup.find('span', class_='current-price')
+    if item:
+        price = item.text
+        price = also_number(price)
+    else:
+        price = 'PARS ERROR'
+    return price
+
+
+def kranok_pars(html_text):
+    soup = BeautifulSoup(html_text, 'html.parser')
+    item = soup.find('span', class_='price')
     if item:
         price = item.text
         price = also_number(price)
@@ -203,5 +268,6 @@ def water_pomp(html_text):
 
 
 if __name__ == '__main__':
-   price = parse('https://rozetka.com.ua/budfix_70029/p95887744/')
-   print(price)
+    url = 'https://kranok.ua/ua/aniplastk821'
+    price = parse(url)
+    print(price)

@@ -18,6 +18,7 @@ message = '''Программа для мониторинга цен на инт
     - geyser.com.ua
     - water-pomp.com.ua
     - rozetka.com.ua
+    - kranok.ua
     
     Для работы необходим файл формата .xlsx с определенным расположением столбцов.
     После проверки будет сохранен новый файл с отчетом.
@@ -62,7 +63,7 @@ def check_file(file):
 if __name__ == '__main__':
     init(autoreset=True)
     print(message)
-    input()
+    # input()
     try:
         file = easygui.fileopenbox('Выберите файл')
         while check_file(file) != '.xlsx':
