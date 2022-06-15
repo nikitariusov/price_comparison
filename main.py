@@ -63,7 +63,7 @@ def check_file(file):
 if __name__ == '__main__':
     init(autoreset=True)
     print(message)
-    # input()
+    input()
     try:
         file = easygui.fileopenbox('Выберите файл')
         while check_file(file) != '.xlsx':

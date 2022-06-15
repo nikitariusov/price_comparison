@@ -16,6 +16,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+# from typing import Union
+
 HEADERS = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
                          '(KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36',
            'accept': '*/*'}
@@ -31,25 +33,41 @@ def get_html(url, param=None):
     return html
 
 
-def open_in_webdriver(url, name):
+def open_in_webdriver(url: str, name: str) -> int | str:  # str возвращаем только в виде ошибок, цены - только int
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     driver.get(url)
 
     if name == 'kranok.ua':
         try:
-            WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.CLASS_NAME, 'normal-price')))
-            price = driver.find_element(by=By.CLASS_NAME, value='normal-price').find_element(by=By.CLASS_NAME,
-                                                                                             value='price').text
+            '''Поиск обычнной цены'''
+            WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CLASS_NAME, 'product-right')))
+            try:
+                price = driver.find_element(by=By.CLASS_NAME, value='normal-price').find_element(by=By.CLASS_NAME,
+                                                                                                 value='price').text
+            except:
+                price = None
 
-            price = also_number(price)
+            if not price:
+                try:
+                    price = driver.find_element(by=By.CLASS_NAME, value='sale-price').find_element(by=By.ID,
+                                                                                                   value='sale-price').text
+                except:
+                    price = None
+
+            if not price:
+                price = driver.find_element(by=By.CLASS_NAME, value='stock-no').text
+                if price == 'Переглянути подібні товари':
+                    price = 'Нет в наличии/нет цены'
+                else:
+                    price = 'что-то пошло не так'
+
+            if price != 'Нет в наличии/нет цены' and price:
+                price = int(also_number(price))
             return price
         except TimeoutException:
-            WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.CLASS_NAME, 'stock-no')))
-            price = driver.find_element(by=By.CLASS_NAME, value='stock-no').text
-            price = also_number(price)
-            if price == 'Переглянути подібні товари':
-                price = 'Нет в наличии/нет цены'
-                return price
+            price = 'Страница не загрузилась'
+            return price
+
     else:
         price = 'Need Selenium Parser'
 
@@ -65,11 +83,12 @@ def define_magazine(url):
 
 
 def also_number(str):
-    str1 = re.findall('[0-9]', str)
+    str = str[:str.find(',')]
+    str1 = re.findall('\d', str)
     return ''.join(str1)
 
 
-def parse(url):
+def parse(url: str) -> str | int:  # str возвращаем только в виде ошибок, цены - только int
     name = define_magazine(url)
     if name in added_magazine:
         html = get_html(url)
@@ -268,6 +287,7 @@ def water_pomp(html_text):
 
 
 if __name__ == '__main__':
-    url = 'https://kranok.ua/ua/aniplastk821'
+    url = 'https://water-pomp.com.ua/p1274949942-mylnitsa-globus-lux.html'
     price = parse(url)
-    print(price)
+    print(f'Тип значения price {type(price)}')
+    print(f'Цена: {price}')
