@@ -24,7 +24,7 @@ HEADERS = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/
 
 added_magazine = ('kty.com.ua', 'aquatools.com.ua', '3metra.com', 'zaslonka.com.ua', 'palladium.ua', 'in-ua.com',
                   'in-ua.com', 'geyser.com.ua', 'water-pomp.com.ua', 'bt.rozetka.com.ua', 'rozetka.com.ua',
-                  'kranok.ua', 'ars.ua')
+                  'kranok.ua', 'ars.ua', 'santekh.com.ua')
 
 
 def get_html(url, param=None):
@@ -153,7 +153,7 @@ def parse(url: str) -> str | int:  # str возвращаем только в в
                 except ValueError:
                     price = geyser(html.text)
 
-            elif name == 'water-pomp.com.ua':
+            elif name == 'water-pomp.com.ua' or 'santekh.com.ua':
                 try:
                     price = int(water_pomp(html.text))
                 except ValueError:
@@ -308,7 +308,7 @@ def water_pomp(html_text):
 
 
 if __name__ == '__main__':
-    url = 'https://kranok.ua/ua/globus-luxds0010'
+    url = 'https://santekh.com.ua/p1598015561-susharka-dlya-ruk.html?source=merchant_center&gclid=CjwKCAjwu_mSBhAYEiwA5BBmf9q8Q3bIMQZmkg5Tce7Aag2FkI4FnyP7POodvAi2OBjbzuylBkrz3xoCmMMQAvD_BwE'
     price = parse(url)
     print(f'Тип значения price {type(price)}')
     print(f'Цена: {price}')
