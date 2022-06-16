@@ -57,11 +57,11 @@ def open_in_webdriver(url: str, name: str) -> int | str:  # str возвраща
             if not price:
                 price = driver.find_element(by=By.CLASS_NAME, value='stock-no').text
                 if price == 'Переглянути подібні товари':
-                    price = 'Нет в наличии/нет цены'
+                    price = 'Нет цены'
                 else:
                     price = 'что-то пошло не так'
 
-            if price != 'Нет в наличии/нет цены' and price:
+            if price != 'Нет цены' and price:
                 price = int(also_number(price))
             return price
         except TimeoutException:
@@ -308,7 +308,7 @@ def water_pomp(html_text):
 
 
 if __name__ == '__main__':
-    url = 'https://ars.ua/ru/zmishuvach-dlja-bide-grohe-eurosmart-cosmopolitan-32839000.html'
+    url = 'https://kranok.ua/ua/globus-luxds0010'
     price = parse(url)
     print(f'Тип значения price {type(price)}')
     print(f'Цена: {price}')
