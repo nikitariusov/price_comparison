@@ -24,7 +24,7 @@ HEADERS = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/
 
 added_magazine = ('kty.com.ua', 'aquatools.com.ua', '3metra.com', 'zaslonka.com.ua', 'palladium.ua', 'in-ua.com',
                   'in-ua.com', 'geyser.com.ua', 'water-pomp.com.ua', 'bt.rozetka.com.ua', 'rozetka.com.ua',
-                  'kranok.ua', 'ars.ua', 'santekh.com.ua')
+                  'kranok.ua', 'ars.ua', 'santekh.com.ua', 'www.hydrolog.kiev.ua')
 
 
 def get_html(url, param=None):
@@ -105,6 +105,12 @@ def parse(url: str) -> str | int:  # str возвращаем только в в
                 except ValueError:
                     price = ars_pars(html.text)
 
+            elif name == 'www.hydrolog.kiev.ua':
+                try:
+                    price = int(hydrolog_pars(html.text))
+                except ValueError:
+                    price = hydrolog_pars(html.text)
+
             elif name == 'bt.rozetka.com.ua' or name == 'rozetka.com.ua':
                 try:
                     price = int(rozetka_pars(html.text))
@@ -179,6 +185,17 @@ def parse(url: str) -> str | int:  # str возвращаем только в в
 def kty_pars(html_text):
     soup = BeautifulSoup(html_text, 'html.parser')
     item = soup.find('span', class_='current-price')
+    if item:
+        price = item.text
+        price = also_number(price)
+    else:
+        price = 'PARS ERROR'
+    return price
+
+
+def hydrolog_pars(html_text):
+    soup = BeautifulSoup(html_text, 'html.parser')
+    item = soup.find('ul', class_='list-unstyled price').find_all('li')[0]
     if item:
         price = item.text
         price = also_number(price)
@@ -308,7 +325,7 @@ def water_pomp(html_text):
 
 
 if __name__ == '__main__':
-    url = 'https://santekh.com.ua/p1598015561-susharka-dlya-ruk.html?source=merchant_center&gclid=CjwKCAjwu_mSBhAYEiwA5BBmf9q8Q3bIMQZmkg5Tce7Aag2FkI4FnyP7POodvAi2OBjbzuylBkrz3xoCmMMQAvD_BwE'
+    url = 'https://www.hydrolog.kiev.ua/nasosy/nasos-tsirkulyatsionnyiy-optima-op-25-80-180.html'
     price = parse(url)
     print(f'Тип значения price {type(price)}')
     print(f'Цена: {price}')
