@@ -153,7 +153,7 @@ def parse(url: str) -> str | int:  # str возвращаем только в в
                 except ValueError:
                     price = geyser(html.text)
 
-            elif name == 'water-pomp.com.ua' or 'santekh.com.ua':
+            elif name == 'water-pomp.com.ua' or 'santekh.com.ua':  # оба магазина сделаны на Проме
                 try:
                     price = int(water_pomp(html.text))
                 except ValueError:
