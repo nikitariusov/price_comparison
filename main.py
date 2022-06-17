@@ -17,11 +17,16 @@ message = '''Программа для мониторинга цен на инт
     - in-ua.com
     - geyser.com.ua
     - water-pomp.com.ua
+    - rozetka.com.ua
+    - kranok.ua
+    - ars.ua
+    - santekh.com.ua
+    - www.hydrolog.kiev.ua
+    - agrohozmarket.com.ua
     
-    Для работы необходим файл формата .xlsx с определенным расположением столбцов.
+    Для работы необходим файл формата .xlsx с правильным расположением столбцов.
     После проверки будет сохранен новый файл с отчетом.
     
-    Контакт для связи: telegram @n_konstruktor
     
     START - Enter
     '''
