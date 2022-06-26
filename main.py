@@ -23,6 +23,8 @@ message = '''Программа для мониторинга цен на инт
     - santekh.com.ua
     - www.hydrolog.kiev.ua
     - agrohozmarket.com.ua
+    - totmarket.com.ua
+    - ovs.com.ua
     
     Для работы необходим файл формата .xlsx с правильным расположением столбцов.
     После проверки будет сохранен новый файл с отчетом.
