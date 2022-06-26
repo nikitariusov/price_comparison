@@ -25,7 +25,7 @@ HEADERS = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/
 added_magazine = ('kty.com.ua', 'aquatools.com.ua', '3metra.com', 'zaslonka.com.ua', 'palladium.ua', 'in-ua.com',
                   'in-ua.com', 'geyser.com.ua', 'water-pomp.com.ua', 'bt.rozetka.com.ua', 'rozetka.com.ua',
                   'kranok.ua', 'ars.ua', 'santekh.com.ua', 'www.hydrolog.kiev.ua', 'agrohozmarket.com.ua',
-                  'totmarket.com.ua')
+                  'totmarket.com.ua', 'ovs.com.ua')
 
 
 def get_html(url, param=None):
@@ -99,6 +99,12 @@ def parse(url: str) -> str | int:  # str возвращаем только в в
                     price = int(kty_pars(html.text))
                 except ValueError:
                     price = kty_pars(html.text)
+
+            if name == 'ovs.com.ua':
+                try:
+                    price = int(ovs_price(html.text))
+                except ValueError:
+                    price = ovs_price(html.text)
 
             elif name == 'ars.ua':
                 try:
@@ -186,6 +192,17 @@ def parse(url: str) -> str | int:  # str возвращаем только в в
 def kty_pars(html_text):
     soup = BeautifulSoup(html_text, 'html.parser')
     item = soup.find('span', class_='current-price')
+    if item:
+        price = item.text
+        price = also_number(price)
+    else:
+        price = 'PARS ERROR'
+    return price
+
+
+def ovs_price(html_text):
+    soup = BeautifulSoup(html_text, 'html.parser')
+    item = soup.find('span', class_='price-normal')
     if item:
         price = item.text
         price = also_number(price)
@@ -326,7 +343,7 @@ def water_pomp(html_text):
 
 
 if __name__ == '__main__':
-    url = 'https://totmarket.com.ua/p1382353163-nasos-tsirkulyatsionnyj-tsentrobezh.html'
+    url = 'https://ovs.com.ua/ru/dacha-sad-ogorod/nasosnaya-tekhnika/nasosy-dlya-povysheniya-davleniya/nasos-dlya-p'
     price = parse(url)
     print(f'Тип значения price {type(price)}')
     print(f'Цена: {price}')
