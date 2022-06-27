@@ -289,7 +289,7 @@ def three_metra_pars(html_text):
 
 def zaslonka_pars(html_text):
     soup = BeautifulSoup(html_text, 'html.parser')
-    item = soup.find('span', class_='ty-price-num')
+    item = soup.find('span', class_='ty-price')
     if item:
         price = item.text
         price = also_number(price)
@@ -347,7 +347,7 @@ def water_pomp(html_text):
 
 
 if __name__ == '__main__':
-    url = 'https://water-pomp.com.ua/p1381911726-kran-dlya-kuhni.html'
+    url = 'https://kty.com.ua/ru/nasosnaya-stanciya-volks-pumpe-wz370-bak-2-l.html'
     price = parse(url)
     print(f'Тип значения price {type(price)}')
     print(f'Цена: {price}')
