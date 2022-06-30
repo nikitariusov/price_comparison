@@ -27,6 +27,8 @@ added_magazine = ('kty.com.ua', 'aquatools.com.ua', '3metra.com', 'zaslonka.com.
                   'kranok.ua', 'ars.ua', 'santekh.com.ua', 'www.hydrolog.kiev.ua', 'agrohozmarket.com.ua',
                   'totmarket.com.ua', 'ovs.com.ua')
 
+prom_ua = ('water-pomp.com.ua', 'santekh.com.ua', 'agrohozmarket.com.ua', 'totmarket.com.ua')
+
 
 def get_html(url, param=None):
     r = requests.get(url, headers=HEADERS, params=param)
@@ -93,6 +95,7 @@ def parse(url: str) -> str | int:  # str возвращаем только в в
     name = define_magazine(url)
     if name in added_magazine:
         html = get_html(url)
+
         if html.status_code == 200:
             if name == 'kty.com.ua':
                 try:
@@ -100,7 +103,7 @@ def parse(url: str) -> str | int:  # str возвращаем только в в
                 except ValueError:
                     price = kty_pars(html.text)
 
-            if name == 'ovs.com.ua':
+            elif name == 'ovs.com.ua':
                 try:
                     price = int(ovs_price(html.text))
                 except ValueError:
@@ -166,11 +169,12 @@ def parse(url: str) -> str | int:  # str возвращаем только в в
                 except ValueError:
                     price = geyser(html.text)
 
-            elif name == 'water-pomp.com.ua' or 'santekh.com.ua' or 'agrohozmarket.com.ua' or 'totmarket.com.ua':  # магазины сделаны на Проме
+            elif name in prom_ua:  # магазины сделаны на Проме
                 try:
                     price = int(water_pomp(html.text))
                 except ValueError:
                     price = water_pomp(html.text)
+
             else:
                 price = '2 No Parser'
             return price
@@ -285,7 +289,7 @@ def three_metra_pars(html_text):
 
 def zaslonka_pars(html_text):
     soup = BeautifulSoup(html_text, 'html.parser')
-    item = soup.find('span', class_='ty-price-num')
+    item = soup.find('span', class_='ty-price')
     if item:
         price = item.text
         price = also_number(price)
@@ -343,7 +347,7 @@ def water_pomp(html_text):
 
 
 if __name__ == '__main__':
-    url = 'https://ovs.com.ua/ru/dacha-sad-ogorod/nasosnaya-tekhnika/nasosy-dlya-povysheniya-davleniya/nasos-dlya-p'
+    url = 'https://kty.com.ua/ru/nasosnaya-stanciya-volks-pumpe-wz370-bak-2-l.html'
     price = parse(url)
     print(f'Тип значения price {type(price)}')
     print(f'Цена: {price}')
