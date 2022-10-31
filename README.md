@@ -1,3 +1,5 @@
+https://nikitariusov.github.io/price_comparison/
+
 # price_comparison
 
 **v 1.1 Задача:**
