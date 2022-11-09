@@ -69,6 +69,18 @@ def open_in_webdriver(url: str, name: str) -> int | str:  # str возвраща
             price = 'Страница не загрузилась'
             return price
 
+    elif name == 'kty.com.ua':
+        try:
+            '''Поиск обычнной цены'''
+            WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CLASS_NAME, 'product-price')))
+            try:
+                price = driver.find_element(by=By.CLASS_NAME, value='product-price').text
+                price = also_number(price)
+            except:
+                price = None
+        except TimeoutException:
+            price = 'Страница не загрузилась'
+        return price
     else:
         price = 'Need Selenium Parser'
 
@@ -100,7 +112,7 @@ def parse(url: str) -> str | int:  # str возвращаем только в в
                 except ValueError:
                     price = kty_pars(html.text)
 
-            if name == 'ovs.com.ua':
+            elif name == 'ovs.com.ua':
                 try:
                     price = int(ovs_price(html.text))
                 except ValueError:
@@ -343,7 +355,7 @@ def water_pomp(html_text):
 
 
 if __name__ == '__main__':
-    url = 'https://ovs.com.ua/ru/dacha-sad-ogorod/nasosnaya-tekhnika/nasosy-dlya-povysheniya-davleniya/nasos-dlya-p'
+    url = 'https://kty.com.ua/ru/nasosnaya-stanciya-optima-qb-60-mini-037-kvt.html'
     price = parse(url)
     print(f'Тип значения price {type(price)}')
     print(f'Цена: {price}')
