@@ -1,6 +1,6 @@
 '''Принцип добавления новых интернет магазинов:
 1. Добавляем ссылку в кортеж added_magazine
-2. Пишем функцию название магазина-pars, в основном копируем с другого магазина но указываем элементы для поиска на странице
+2. Пишем функцию название магазина-pars, в офсновном копируем с другого магазина но указываем элементы для поиска на странице
 3. В def parse пишем условие и указываем созданную функцию
 4. Если ссылка не работает через request то открываем через def open_in_webdriver (Селениум)
 5. В def open_in_webdriver пишем условие на новый магазин по примеру КранОк'''
@@ -24,8 +24,7 @@ HEADERS = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/
 
 added_magazine = ('kty.com.ua', 'aquatools.com.ua', '3metra.com', 'zaslonka.com.ua', 'palladium.ua', 'in-ua.com',
                   'in-ua.com', 'geyser.com.ua', 'water-pomp.com.ua', 'bt.rozetka.com.ua', 'rozetka.com.ua',
-                  'kranok.ua', 'ars.ua', 'santekh.com.ua', 'www.hydrolog.kiev.ua', 'agrohozmarket.com.ua',
-                  'totmarket.com.ua', 'ovs.com.ua')
+                  'kranok.ua', 'ars.ua', 'santekh.com.ua', 'www.hydrolog.kiev.ua', 'agrohozmarket.com.ua')
 
 
 def get_html(url, param=None):
@@ -100,12 +99,6 @@ def parse(url: str) -> str | int:  # str возвращаем только в в
                 except ValueError:
                     price = kty_pars(html.text)
 
-            if name == 'ovs.com.ua':
-                try:
-                    price = int(ovs_price(html.text))
-                except ValueError:
-                    price = ovs_price(html.text)
-
             elif name == 'ars.ua':
                 try:
                     price = int(ars_pars(html.text))
@@ -166,7 +159,7 @@ def parse(url: str) -> str | int:  # str возвращаем только в в
                 except ValueError:
                     price = geyser(html.text)
 
-            elif name == 'water-pomp.com.ua' or 'santekh.com.ua' or 'agrohozmarket.com.ua' or 'totmarket.com.ua':  # магазины сделаны на Проме
+            elif name == 'water-pomp.com.ua' or 'santekh.com.ua' or 'agrohozmarket.com.ua':  # магазины сделаны на Проме
                 try:
                     price = int(water_pomp(html.text))
                 except ValueError:
@@ -192,17 +185,6 @@ def parse(url: str) -> str | int:  # str возвращаем только в в
 def kty_pars(html_text):
     soup = BeautifulSoup(html_text, 'html.parser')
     item = soup.find('span', class_='current-price')
-    if item:
-        price = item.text
-        price = also_number(price)
-    else:
-        price = 'PARS ERROR'
-    return price
-
-
-def ovs_price(html_text):
-    soup = BeautifulSoup(html_text, 'html.parser')
-    item = soup.find('span', class_='price-normal')
     if item:
         price = item.text
         price = also_number(price)
@@ -343,7 +325,7 @@ def water_pomp(html_text):
 
 
 if __name__ == '__main__':
-    url = 'https://ovs.com.ua/ru/dacha-sad-ogorod/nasosnaya-tekhnika/nasosy-dlya-povysheniya-davleniya/nasos-dlya-p'
+    url = 'https://agrohozmarket.com.ua/p1493491334-zilmet-rasshiritelnyj-bak.html'
     price = parse(url)
     print(f'Тип значения price {type(price)}')
     print(f'Цена: {price}')
