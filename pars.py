@@ -25,7 +25,7 @@ HEADERS = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/
 added_magazine = ('kty.com.ua', 'aquatools.com.ua', '3metra.com', 'zaslonka.com.ua', 'palladium.ua', 'in-ua.com',
                   'in-ua.com', 'geyser.com.ua', 'water-pomp.com.ua', 'bt.rozetka.com.ua', 'rozetka.com.ua',
                   'kranok.ua', 'ars.ua', 'santekh.com.ua', 'www.hydrolog.kiev.ua', 'agrohozmarket.com.ua',
-                  'totmarket.com.ua', 'ovs.com.ua')
+                  'totmarket.com.ua', 'ovs.com.ua', 'teplovuk.com.ua')
 
 prom_ua = ('water-pomp.com.ua', 'santekh.com.ua', 'agrohozmarket.com.ua', 'totmarket.com.ua')
 
@@ -121,6 +121,12 @@ def parse(url: str) -> str | int:  # str возвращаем только в в
                 except ValueError:
                     price = ovs_price(html.text)
 
+            elif name == 'teplovuk.com.ua':
+                try:
+                    price = int(teplovuk_parse(html.text))
+                except ValueError:
+                    price = teplovuk_parse(html.text)
+
             elif name == 'ars.ua':
                 try:
                     price = int(ars_pars(html.text))
@@ -208,6 +214,17 @@ def parse(url: str) -> str | int:  # str возвращаем только в в
 def kty_pars(html_text):
     soup = BeautifulSoup(html_text, 'html.parser')
     item = soup.find('span', class_='current-price')
+    if item:
+        price = item.text
+        price = also_number(price)
+    else:
+        price = 'PARS ERROR'
+    return price
+
+
+def teplovuk_parse(html_text):
+    soup = BeautifulSoup(html_text, 'html.parser')
+    item = soup.find('div', class_='price').find('span', class_='sum')
     if item:
         price = item.text
         price = also_number(price)
@@ -359,7 +376,7 @@ def water_pomp(html_text):
 
 
 if __name__ == '__main__':
-    url = 'https://kty.com.ua/ru/nasosnaya-stanciya-optima-qb-60-mini-037-kvt.html'
+    url = 'https://teplovuk.com.ua/baki-4/kotlovi-24/rozshiryuvalnij-bak-zilmet-oem-pro-6l-38%E2%80%B3-13c0000603-3588.html'
     price = parse(url)
     print(f'Тип значения price {type(price)}')
     print(f'Цена: {price}')
