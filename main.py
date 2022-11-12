@@ -3,6 +3,7 @@ from pars import *
 from save import save_file
 import easygui
 from colorama import init, Fore
+from progress.bar import ChargingBar
 
 message = '''Программа для мониторинга цен на интернет ресурсах.
 
@@ -25,6 +26,7 @@ message = '''Программа для мониторинга цен на инт
     - agrohozmarket.com.ua
     - totmarket.com.ua
     - ovs.com.ua
+    - teplovuk.com.ua
     
     Для работы необходим файл формата .xlsx с правильным расположением столбцов.
     После проверки будет сохранен новый файл с отчетом.
@@ -49,8 +51,9 @@ def start_pars(i, link_name_cell, price_name_cell):
 
 def cell_parsing(data):
     j = 1
+    bar = ChargingBar(f'Парсинг {j} из {products_count} товаров... ', max=products_count)
     for i in data:
-        print(f'Парсинг {j} из {products_count} товаров...')
+        bar.message = f'Парсинг {j} из {products_count} товаров... '
         start_pars(i, 'Ссылка КТУ', 'Цена КТУ')
         start_pars(i, 'Ссылка конкурента 1', 'Цена конкурента 1')
         start_pars(i, 'Ссылка конкурента 2', 'Цена конкурента 2')
@@ -58,6 +61,8 @@ def cell_parsing(data):
         start_pars(i, 'Ссылка конкурента 4', 'Цена конкурента 4')
         start_pars(i, 'Ссылка конкурента 5', 'Цена конкурента 5')
         j += 1
+        bar.next()
+    bar.finish()
     return data
 
 
